@@ -50,15 +50,16 @@
 
         .feed-container, .messages-container, .notifications-container, .profile-container { max-width: 600px; margin: 20px auto; padding: 0 20px; width: 100%; }
         
-        /* Feed Cards for Posts & Ads */
+        /* Feed Cards for Posts & Sponsored Ads */
         .feed-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #e5e7eb; position: relative; }
+        .feed-card.sponsored-ad { border-left: 4px solid #ff9900; background-color: #fffbeb; }
         
         .post-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .post-user-info { font-weight: 600; font-size: 14px; color: #4b5563; display: flex; align-items: center; gap: 6px; }
+        .ad-badge { background-color: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
         
         .follow-inline-btn { background: #4f46e5; color: white; border: none; padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 14px; cursor: pointer; transition: all 0.2s; }
         .follow-inline-btn.following { background: #e5e7eb; color: #4b5563; }
-        .follow-inline-btn:hover { opacity: 0.9; }
 
         .post-text { font-size: 15px; color: #1f2937; line-height: 1.5; margin-bottom: 8px; }
         .feed-media { width: 100%; max-height: 450px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid #e5e7eb; display: block; }
@@ -68,48 +69,46 @@
         
         /* Panels & Forms */
         .upload-panel, .ad-panel, .profile-panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 24px; display: none; }
-        .upload-panel.active { display: block; }
+        .upload-panel.active, .ad-panel.active { display: block; }
         
-        .textarea, .form-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 14px; }
+        .textarea, .form-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 14px; outline: none; }
         .textarea { height: 80px; resize: none; }
         
         .submit-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; width: 100%; }
         .submit-btn:hover { background: #4338ca; }
+        .submit-btn.orange-btn { background: #ff9900; color: white; }
+        .submit-btn.orange-btn:hover { background: #e08500; }
 
-        /* Extended Profile Branding Headers Graphics Preview Slots */
-        .profile-branding-container { width: 100%; position: relative; margin-bottom: 65px; background: #e5e7eb; border-radius: 12px; overflow: visible; }
-        .profile-cover-preview { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; background: #cbd5e1; display: block; }
-        .profile-avatar-wrapper { position: absolute; bottom: -45px; left: 20px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; background: #94a3b8; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .cheap-ad-estimator { background-color: #f0fdf4; border: 1px dashed #22c55e; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #166534; }
+
+        /* Profile & Messages Layout rules */
+        .profile-branding-container { width: 100%; position: relative; margin-bottom: 65px; background: #e5e7eb; border-radius: 12px; }
+        .profile-cover-preview { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; display: block; }
+        .profile-avatar-wrapper { position: absolute; bottom: -45px; left: 20px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; background: #94a3b8; overflow: hidden; }
         .profile-avatar-preview { width: 100%; height: 100%; object-fit: cover; }
-        
         .profile-meta-info { margin-top: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .profile-name { font-size: 22px; font-weight: 700; color: #1f2937; }
-        .profile-handle { font-size: 14px; color: #6b7280; }
-        .profile-stats { font-size: 14px; color: #4b5563; font-weight: 500; display: flex; gap: 15px; }
 
-        /* Messages Panel Layout */
-        .chat-layout { background: white; border: 1px solid #e5e7eb; border-radius: 12px; display: flex; height: 500px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .chat-layout { background: white; border: 1px solid #e5e7eb; border-radius: 12px; display: flex; height: 500px; overflow: hidden; }
         .chat-sidebar { width: 35%; border-right: 1px solid #e5e7eb; background: #f9fafb; overflow-y: auto; }
         .sidebar-header { padding: 15px; font-weight: bold; border-bottom: 1px solid #e5e7eb; font-size: 14px; color: #4b5563; }
-        
         .chat-window { width: 65%; display: flex; flex-direction: column; background: white; }
         .chat-messages-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f3f4f6; }
-        .chat-input-area { padding: 12px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; background: white; }
+        .chat-input-area { padding: 12px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; }
         .chat-input { flex: 1; border: 1px solid #d1d5db; border-radius: 20px; padding: 8px 16px; font-size: 14px; outline: none; }
         .chat-send-btn { background: #4f46e5; color: white; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        /* Notifications Styles */
         .notification-card { background: white; padding: 16px; border-radius: 10px; border: 1px solid #e5e7eb; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-        .notification-icon { width: 36px; height: 36px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-        .notification-content { font-size: 14px; color: #1f2937; }
-        .notification-time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+        .notification-icon { width: 36px; height: 36px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     </style>
 </head>
 <body>
 
     <header class="header">
         <a href="#" class="logo" id="logoHomeLink">Handface</a>
-        <button class="icon-btn" id="profileViewBtn" title="My Profile" style="width: auto;">👤</button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="submit-btn orange-btn" id="navAdPanelBtn" style="padding: 6px 12px; font-size: 13px; font-weight:600; border-radius: 20px; width: auto;">📢 Run Low-Cost Ad</button>
+            <button class="icon-btn" id="profileViewBtn" title="My Profile" style="width: auto;">👤</button>
+        </div>
     </header>
 
     <button class="floating-add-btn" id="globalAddContentBtn" title="Create a Post">+</button>
@@ -119,6 +118,24 @@
             <textarea id="postText" class="textarea" placeholder="What's on your mind?"></textarea>
             <input type="file" id="postFile" accept="image/*,video/*" style="margin-bottom: 12px; display: block;">
             <button class="submit-btn" id="submitPostBtn" style="width: auto;">Share to Feed</button>
+        </div>
+
+        <div class="ad-panel" id="adPanel">
+            <h3 style="margin-size: 16px; margin-bottom: 12px; color:#1f2937;">Deploy Micro-Budget Sponsored Ad</h3>
+            
+            <input type="text" id="adBrandName" class="form-input" placeholder="Brand Name (e.g. My Shop)">
+            <textarea id="adContentText" class="textarea" placeholder="Write your advertising text..."></textarea>
+            
+            <div style="margin-bottom: 12px;">
+                <label style="display:block; font-size: 12px; font-weight:600; margin-bottom:4px; color:#4b5563;">Select Budget ($0.01 per click)</label>
+                <input type="number" id="adBudgetInput" class="form-input" value="5" min="1" style="margin-bottom:6px;">
+            </div>
+
+            <div class="cheap-ad-estimator" id="adEstimatorReadout">
+                Estimated Exposure: <strong>500 clicks / profile views</strong> guaranteed for just <strong>$5.00</strong>!
+            </div>
+
+            <button class="submit-btn orange-btn" id="submitAdBtn">Deploy Cheap Ad Now</button>
         </div>
 
         <div id="masterFeedStream"></div>
@@ -161,31 +178,12 @@
                 <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%2394a3b8'/></svg>" class="profile-avatar-preview" id="userAvatarPreview" alt="Profile Avatar">
             </div>
         </div>
-
         <div class="profile-meta-info">
             <div>
                 <div class="profile-name" id="profileDisplayName">Handface Creator</div>
-                <div class="profile-handle" id="profileDisplayHandle">@creator_account</div>
+                <div class="profile-handle">@creator_account</div>
             </div>
-            <div class="profile-stats">
-                <div><span id="followingCount">0</span> Following</div>
-            </div>
-        </div>
-
-        <div class="profile-panel" style="display: block;">
-            <h3 style="font-size: 16px; margin-bottom: 14px; color: #374151;">Update Branding Graphics Assets</h3>
-            
-            <div style="margin-bottom: 14px;">
-                <label style="display:block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #4b5563;">Upload Avatar Picture</label>
-                <input type="file" id="uploadAvatarFile" accept="image/*">
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="display:block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #4b5563;">Upload Cover Picture</label>
-                <input type="file" id="uploadCoverFile" accept="image/*">
-            </div>
-            
-            <button class="submit-btn" id="saveBrandingAssetsBtn">Save Profile Modifications</button>
+            <div><span id="followingCount">0</span> Following</div>
         </div>
     </div>
 
@@ -196,76 +194,102 @@
     </nav>
 
     <script>
-        // DOM Hooks for structural viewing panel switching navigation mechanics
         const navHomeBtn = document.getElementById('navHomeBtn');
         const navMessagesBtn = document.getElementById('navMessagesBtn');
         const navNotificationsBtn = document.getElementById('navNotificationsBtn');
         const profileViewBtn = document.getElementById('profileViewBtn');
+        const navAdPanelBtn = document.getElementById('navAdPanelBtn');
 
         const feedViewContainer = document.getElementById('feedViewContainer');
         const messagesViewPanel = document.getElementById('messagesViewPanel');
         const notificationsViewPanel = document.getElementById('notificationsViewPanel');
         const profileViewContainer = document.getElementById('profileViewContainer');
+        const adPanel = document.getElementById('adPanel');
 
-        // Follow System Data Store Tracker
         let followedUsers = new Set();
-        // Mock unique generator tracking to demonstrate cross-card follow actions cleanly
         let userSeedIndex = 1;
 
-        // Central workspace window layout manager
         function switchWorkspaceView(activeButton, activePanel) {
-            [navHomeBtn, navMessagesBtn, navNotificationsBtn, profileViewBtn].forEach(btn => btn.classList.remove('active'));
+            [navHomeBtn, navMessagesBtn, navNotificationsBtn, profileViewBtn].forEach(btn => btn?.classList.remove('active'));
             [feedViewContainer, messagesViewPanel, notificationsViewPanel, profileViewContainer].forEach(panel => panel.style.display = 'none');
-
+            
             if (activeButton) activeButton.classList.add('active');
             activePanel.style.display = 'block';
         }
 
-        // Apply interactive view triggers
-        navHomeBtn.addEventListener('click', () => switchWorkspaceView(navHomeBtn, feedViewContainer));
+        navHomeBtn.addEventListener('click', () => {
+            switchWorkspaceView(navHomeBtn, feedViewContainer);
+            adPanel.style.display = 'none'; // Clear ad settings down
+        });
         navMessagesBtn.addEventListener('click', () => switchWorkspaceView(navMessagesBtn, messagesViewPanel));
         navNotificationsBtn.addEventListener('click', () => switchWorkspaceView(navNotificationsBtn, notificationsViewPanel));
         profileViewBtn.addEventListener('click', () => switchWorkspaceView(profileViewBtn, profileViewContainer));
 
-        // Toggle creator box closure
+        // Toggle Ad Panel visibility inside Home Feed Container
+        navAdPanelBtn.addEventListener('click', () => {
+            switchWorkspaceView(navHomeBtn, feedViewContainer);
+            document.getElementById('uploadPanel').classList.remove('active');
+            adPanel.classList.toggle('active');
+        });
+
         document.getElementById('globalAddContentBtn').addEventListener('click', () => {
             switchWorkspaceView(navHomeBtn, feedViewContainer);
-            const panel = document.getElementById('uploadPanel');
-            panel.classList.toggle('active');
+            adPanel.classList.remove('active');
+            document.getElementById('uploadPanel').classList.toggle('active');
         });
 
-        // Real-Time Local File Graph Image previewers engine hooks
-        document.getElementById('uploadAvatarFile').addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                document.getElementById('userAvatarPreview').src = URL.createObjectURL(this.files[0]);
+        // Dynamic Real-time Low Cost Calculator Math Handler
+        document.getElementById('adBudgetInput').addEventListener('input', function() {
+            const val = parseFloat(this.value) || 0;
+            const estimator = document.getElementById('adEstimatorReadout');
+            if(val <= 0) {
+                estimator.innerHTML = `Minimum budget is $1.00`;
+                return;
             }
+            const estimateClicks = Math.floor(val * 100); // 1 cent per click calculation rules
+            estimator.innerHTML = `Estimated Exposure: <strong>${estimateClicks.toLocaleString()} clicks / profile views</strong> guaranteed for just <strong>$${val.toFixed(2)}</strong>!`;
         });
 
-        document.getElementById('uploadCoverFile').addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                document.getElementById('userCoverPreview').src = URL.createObjectURL(this.files[0]);
-            }
-        });
+        // Inject Cheap Sponsored Advertisement card directly into the live stream component
+        document.getElementById('submitAdBtn').addEventListener('click', () => {
+            const brand = document.getElementById('adBrandName').value.trim();
+            const content = document.getElementById('adContentText').value.trim();
+            const budget = document.getElementById('adBudgetInput').value;
 
-        document.getElementById('saveBrandingAssetsBtn').addEventListener('click', () => {
-            alert("Changes saved locally!");
-            switchWorkspaceView(navHomeBtn, feedViewContainer);
-        });
-
-        // Dynamic Post Renderer Engine
-        function renderPostToStream(textContent, fileInputId) {
-            const stream = document.getElementById('masterFeedStream');
-            const fileInput = document.getElementById(fileInputId);
-            
-            if (!textContent && (!fileInput || fileInput.files.length === 0)) {
-                alert("Please add some content before sharing!");
+            if(!brand || !content) {
+                alert("Please complete the brand name and messaging details!");
                 return;
             }
 
+            const stream = document.getElementById('masterFeedStream');
+            const adCard = document.createElement('div');
+            adCard.className = 'feed-card sponsored-ad'; // Uses custom yellow highlight borders
+            
+            adCard.innerHTML = `
+                <div class="post-header-row">
+                    <div class="post-user-info">📢 <strong>${brand}</strong></div>
+                    <span class="ad-badge">Promoted</span>
+                </div>
+                <p class="post-text">${content}</p>
+                <div style="font-size:11px; color:#6b7280; font-weight:500;">Micro-budget campaign funded at $${parseFloat(budget).toFixed(2)}</div>
+            `;
+
+            stream.prepend(adCard);
+            triggerNotification(`Successfully launched sponsored campaign for "${brand}"!`);
+            
+            // Wipe forms out safely
+            document.getElementById('adBrandName').value = "";
+            document.getElementById('adContentText').value = "";
+            adPanel.classList.remove('active');
+        });
+
+        function renderPostToStream(textContent, fileInputId) {
+            const stream = document.getElementById('masterFeedStream');
+            const fileInput = document.getElementById(fileInputId);
+            if (!textContent && (!fileInput || fileInput.files.length === 0)) return;
+
             const card = document.createElement('div');
             card.className = 'feed-card';
-            
-            // Assign a unique user handle string to this card instance
             const dynamicUserHandle = `user_vertex_${userSeedIndex++}`;
 
             let cardHTML = `
@@ -274,75 +298,51 @@
                     <button class="follow-inline-btn" data-user-id="${dynamicUserHandle}">Follow</button>
                 </div>
             `;
-
-            if (textContent) {
-                cardHTML += `<p class="post-text">${textContent}</p>`;
-            }
+            if (textContent) cardHTML += `<p class="post-text">${textContent}</p>`;
 
             if (fileInput && fileInput.files.length > 0) {
                 const file = fileInput.files[0];
                 const mediaUrl = URL.createObjectURL(file);
-
                 if (file.type.startsWith('video/')) {
-                    cardHTML += `
-                        <video class="feed-media" controls muted placement="viewport">
-                            <source src="${mediaUrl}" type="${file.type}">
-                        </video>
-                    `;
+                    cardHTML += `<video class="feed-media" controls muted><source src="${mediaUrl}" type="${file.type}"></video>`;
                 } else if (file.type.startsWith('image/')) {
-                    cardHTML += `<img src="${mediaUrl}" class="feed-media" alt="Post attachment image">`;
+                    cardHTML += `<img src="${mediaUrl}" class="feed-media">`;
                 }
             }
 
             cardHTML += `<button class="boost-panel-btn">⚡ Boost Post</button>`;
             card.innerHTML = cardHTML;
 
-            // Hook Event Listener directly onto the specific element instance
-            const followBtn = card.querySelector('.follow-inline-btn');
-            followBtn.addEventListener('click', function() {
+            card.querySelector('.follow-inline-btn').addEventListener('click', function() {
                 const targetUser = this.getAttribute('data-user-id');
-                
                 if (followedUsers.has(targetUser)) {
                     followedUsers.delete(targetUser);
                     this.textContent = 'Follow';
-                    this.classList.remove('following');
                     triggerNotification(`Unfollowed @${targetUser}`);
                 } else {
                     followedUsers.add(targetUser);
                     this.textContent = 'Following';
-                    this.classList.add('following');
                     triggerNotification(`Started following @${targetUser}`);
                 }
-                
-                // Update stats counter displayed in profile tab dynamically
                 document.getElementById('followingCount').textContent = followedUsers.size;
             });
 
             stream.prepend(card);
-
             document.getElementById('postText').value = "";
             if (fileInput) fileInput.value = "";
             document.getElementById('uploadPanel').classList.remove('active');
         }
 
-        // Helper function to dynamically feed entries into our activated alert tray tab
         function triggerNotification(messageText) {
             const container = document.getElementById('liveNotificationsContainer');
             const alertCard = document.createElement('div');
             alertCard.className = 'notification-card';
-            alertCard.innerHTML = `
-                <div class="notification-icon">👤</div>
-                <div class="notification-content">
-                    <div>${messageText}</div>
-                    <div class="notification-time">Just now</div>
-                </div>
-            `;
+            alertCard.innerHTML = `<div class="notification-icon">👤</div><div class="notification-content"><div>${messageText}</div><div class="notification-time">Just now</div></div>`;
             container.prepend(alertCard);
         }
 
         document.getElementById('submitPostBtn').addEventListener('click', () => {
-            const textValue = document.getElementById('postText').value.trim();
-            renderPostToStream(textValue, 'postFile');
+            renderPostToStream(document.getElementById('postText').value.trim(), 'postFile');
         });
     </script>
 </body>

@@ -99,14 +99,12 @@
     </header>
 
     <main class="feed-container" id="feedViewContainer">
-        <!-- Post Upload Panel -->
         <div class="upload-panel" id="uploadPanel">
             <textarea id="postText" class="textarea" placeholder="What's on your mind?"></textarea>
             <input type="file" id="postFile" accept="image/*,video/*" style="margin-bottom: 12px; display: block;">
             <button class="submit-btn" id="submitPostBtn" style="width: auto;">Share to Feed</button>
         </div>
 
-        <!-- Ad Management Panel -->
         <div class="ad-panel" id="adPanel">
             <h3 style="margin-bottom: 12px;">Create Sponsored Ad</h3>
             <div class="form-group">
@@ -120,22 +118,32 @@
             <button class="submit-btn orange-btn" id="submitAdBtn">Deploy Sponsored Ad</button>
         </div>
 
-        <!-- Live Messaging Panel Interface (Cleared of Mocks) -->
         <div class="messages-container" id="messagesViewPanel" style="display: block; max-width: 100%; margin: 20px 0;">
             <div class="chat-layout">
                 <div class="chat-sidebar">
                     <div class="sidebar-header">Direct Messages</div>
                     <div id="followersListContainer">
-                        <!-- Live active conversation users inject here via JS -->
-                    </div>
+                        </div>
                 </div>
                 
                 <div class="chat-window">
                     <div class="chat-window-header" id="activeChatHeader">Select a user to chat</div>
                     <div class="chat-messages-box" id="liveChatMessagesBox">
-                        <!-- Live conversation message bubbles inject here via JS -->
-                    </div>
+                        </div>
                     <div class="chat-input-area">
                         <input type="text" id="chatMessageInput" class="chat-input" placeholder="Type a message...">
                         <button class="chat-send-btn" id="sendMessageActionBtn">➔</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
+    <nav class="bottom-nav">
+        <button class="icon-btn active" title="Home Feed">🏠</button>
+        <button class="icon-btn" title="Messages">💬</button>
+        <button class="icon-btn" title="Notifications">🔔</button>
+    </nav>
+
+</body>
+</html>

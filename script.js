@@ -1,4 +1,4 @@
-=========================================
+// ==========================================
 // 1. GLOBAL CONFIGURATIONS (Fully Configured)
 // ==========================================
 const BACKEND_URL = "http://92.4.141.75:3000";
@@ -91,7 +91,6 @@ authSubmitBtn.addEventListener('click', async () => {
             alert(result.error || "Authentication failed.");
         }
     } catch (err) {
-        // FIXED: Changed alert text to reflect port 3000 config
         alert("Authentication server unreachable. Verify Port 3000 is open in your Oracle Security List!");
     }
 });
@@ -111,7 +110,6 @@ navLinks.forEach(link => {
     });
 });
 
-// FIXED: Added defensive fallback block check to avoid unexpected null type exceptions
 if (videoPromoBanner) {
     videoPromoBanner.addEventListener('click', () => { adModal.style.display = 'flex'; });
 }
@@ -168,7 +166,6 @@ submitPostBtn.addEventListener('click', async () => {
     }
 });
 
-// Helper implementation
 function closeModal() {
     uploadModal.style.display = 'none';
     postTextArea.value = "";
@@ -194,60 +191,47 @@ submitAdBtn.addEventListener('click', async () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ brand_name: brandName, ad_content: adContent })
         });
-        const savedAd = await response.json();
-        renderAdToStream(savedAd);
+        if (!response.ok) throw new Error("Ad generation failed");
+        alert("Advertisement successfully deployed!");
         closeAdModal();
-    } catch (err) {
-        alert("Ad generation failure.");
+    } catch (error) {
+        alert("Ad error: " + error.message);
     }
 });
 
-function closeAdModal() { adModal.style.display = 'none'; adBrandInput.value = ""; adTextArea.value = ""; }
-
-// ==========================================
-// 7. FEED VISUAL RENDERING ENGINES
-// ==========================================
-async function loadFeedData() {
-    try {
-        const resPosts = await fetch(`${BACKEND_URL}/posts`);
-        if (resPosts.ok) {
-            const posts = await resPosts.json();
-            posts.forEach(post => renderPostToStream(post));
-        }
-        
-        const resAds = await fetch(`${BACKEND_URL}/ads`);
-        if (resAds.ok) {
-            const ads = await resAds.json();
-            ads.forEach(ad => renderAdToStream(ad));
-        }
-    } catch (err) {
-        console.error("Database sync failed:", err);
-    }
+function closeAdModal() {
+    adModal.style.display = 'none';
+    adBrandInput.value = "";
+    adTextArea.value = "";
 }
 
-function renderPostToStream(post) {
-    const newCard = document.createElement('div');
-    newCard.className = 'feed-card';
-    let cardHTML = `<div class="post-user-info">By: User 👤</div><p class="post-text">${post.text_content}</p>`;
+// ==========================================
+// 7. RENDER STREAM PIPELINES WITH ACTIONS
+// ==========================================
+function renderPostToStream(savedPost) {
+    if (!masterFeedStream) return;
 
-    if (post.media_url) {
-        if (post.media_url.includes("/video/upload/") || post.media_url.endsWith(".mp4")) {
-            cardHTML += `<video class="feed-video-player" controls muted><source src="${post.media_url}" type="video/mp4"></video>`;
-        } else {
-            cardHTML += `<img src="${post.media_url}" style="width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #2d2d2d;">`;
-        }
-    }
-    newCard.innerHTML = cardHTML;
-    masterFeedStream.insertBefore(newCard, masterFeedStream.firstChild);
-}
+    const card = document.createElement('div');
+    card.className = 'feed-card';
 
-// FIXED: Properly added trailing closing token block scope marker configuration structure
-function renderAdToStream(ad) {
-    const newAdCard = document.createElement('div');
-    newAdCard.className = 'feed-card sponsored-ad'; 
-    newAdCard.innerHTML = `
-        <div class="ad-header" style="font-weight: bold; color: #4f46e5;">Sponsored by: ${ad.brand_name} 📣</div>
-        <p class="ad-text" style="margin-top: 8px; font-style: italic;">${ad.ad_content}</p>
+    // Build core content layout inside dynamic markup template
+    let cardHTML = `
+        <div class="post-header-row">
+            <div class="post-user-info">👤 Anonymous</div>
+        </div>
+        <p class="post-text">${savedPost.text_content || ""}</p>
+        ${savedPost.media_url ? `<img src="${savedPost.media_url}" class="feed-media" alt="Media content">` : ''}
     `;
-    masterFeedStream.insertBefore(newAdCard, masterFeedStream.firstChild);
-} 
+
+    // INSERTED ACTION PANEL MARKUP SLOTS
+    cardHTML += `
+        <div class="post-actions">
+            <button class="action-btn like-btn">❤️ Like</button>
+            <button class="action-btn comment-btn">💬 Comment</button>
+            <button class="action-btn share-btn">🔗 Share</button>
+        </div>
+    `;
+
+    card.innerHTML = cardHTML;
+    masterFeedStream.prepend(card);
+}

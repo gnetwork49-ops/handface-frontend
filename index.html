@@ -63,7 +63,7 @@
         .submit-btn.orange-btn { background: #ff9900; color: white; }
         .submit-btn.orange-btn:hover { background: #e08500; }
 
-        /* NEW: Extended Profile Branding Headers Graphics Preview Slots */
+        /* Extended Profile Branding Headers Graphics Preview Slots */
         .profile-branding-container { width: 100%; position: relative; margin-bottom: 75px; background: #e5e7eb; border-radius: 8px; }
         .profile-cover-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: #cbd5e1; display: block; }
         .profile-avatar-wrapper { position: absolute; bottom: -50px; left: 20px; width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; background: #94a3b8; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
@@ -99,449 +99,43 @@
     </header>
 
     <main class="feed-container" id="feedViewContainer">
+        <!-- Post Upload Panel -->
         <div class="upload-panel" id="uploadPanel">
             <textarea id="postText" class="textarea" placeholder="What's on your mind?"></textarea>
             <input type="file" id="postFile" accept="image/*,video/*" style="margin-bottom: 12px; display: block;">
             <button class="submit-btn" id="submitPostBtn" style="width: auto;">Share to Feed</button>
         </div>
 
+        <!-- Ad Management Panel -->
         <div class="ad-panel" id="adPanel">
-            <h3 style="margin-bottom: 12px; color: #ff9900;">Create Sponsored Advertisement</h3>
-            <input type="text" id="adBrandInput" class="form-input" placeholder="Brand/Company Name">
-            
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="adBudgetInput" style="font-size: 12px; margin-bottom: 4px;">Daily Budget (Minimum ₦500)</label>
-                <input type="number" id="adBudgetInput" class="form-input" min="500" value="500" placeholder="₦ Daily Budget">
+            <h3 style="margin-bottom: 12px;">Create Sponsored Ad</h3>
+            <div class="form-group">
+                <label for="adBrandName">Brand Name</label>
+                <input type="text" id="adBrandName" class="form-input" placeholder="e.g. Acme Corp">
             </div>
-
-            <textarea id="adTextArea" class="textarea" placeholder="Write your ad text message context here..."></textarea>
-            <button class="submit-btn orange-btn" id="submitAdBtn" style="width: auto;">Launch Campaign</button>
+            <div class="form-group">
+                <label for="adContentText">Ad Message</label>
+                <textarea id="adContentText" class="textarea" placeholder="Write your advertisement copy here..."></textarea>
+            </div>
+            <button class="submit-btn orange-btn" id="submitAdBtn">Deploy Sponsored Ad</button>
         </div>
 
-        <div id="feedContent">
-            <div class="empty-state" id="emptyState">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                <h3>No posts yet</h3>
-                <p>Be the first to upload something new!</p>
-            </div>
-        </div>
-    </main>
-
-    <main class="messages-container" id="messagesViewContainer">
-        <div class="chat-layout">
-            <div class="chat-sidebar">
-                <div class="sidebar-header">Followers Chat</div>
-                <div id="followersContainer">
-                    <div class="follower-item active" data-username="Sarah Jenkins">
-                        <div class="avatar">SJ</div> <span>Sarah Jenkins</span>
-                    </div>
-                    <div class="follower-item" data-username="Alex Rivera">
-                        <div class="avatar">AR</div> <span>Alex Rivera</span>
-                    </div>
-                    <div class="follower-item" data-username="David K.">
-                        <div class="avatar">DK</div> <span>David K.</span>
+        <!-- Live Messaging Panel Interface (Cleared of Mocks) -->
+        <div class="messages-container" id="messagesViewPanel" style="display: block; max-width: 100%; margin: 20px 0;">
+            <div class="chat-layout">
+                <div class="chat-sidebar">
+                    <div class="sidebar-header">Direct Messages</div>
+                    <div id="followersListContainer">
+                        <!-- Live active conversation users inject here via JS -->
                     </div>
                 </div>
-            </div>
-            <div class="chat-window">
-                <div class="chat-window-header" id="chatHeaderName">Sarah Jenkins</div>
-                <div class="chat-messages-box" id="chatMessagesBox">
-                    <div class="message-bubble received">Hey! Loved your recent post on the Handface stream.</div>
-                    <div class="message-bubble sent">Thanks so much, Sarah! Appreciate the support.</div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatInputField" class="chat-input" placeholder="Type a message...">
-                    <button class="chat-send-btn" id="sendMsgBtn">➔</button>
-                </div>
-            </div>
-        </div>
-    </main>
+                
+                <div class="chat-window">
+                    <div class="chat-window-header" id="activeChatHeader">Select a user to chat</div>
+                    <div class="chat-messages-box" id="liveChatMessagesBox">
+                        <!-- Live conversation message bubbles inject here via JS -->
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatMessageInput" class="chat-input" placeholder="Type a message...">
+                        <button class="chat-send-btn" id="sendMessageActionBtn">➔</button>
 
-    <main class="profile-container" id="profileViewContainer">
-        <div class="profile-panel" style="display: block;">
-            <h2 style="margin-bottom: 15px; color: #111827;">Account Settings</h2>
-            
-            <div class="profile-branding-container">
-                <img id="coverPhotoPreview" class="profile-cover-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='50' viewBox='0 0 100 50'><rect width='100%' height='100%' fill='%23cbd5e1'/></svg>" alt="Cover Photo Preview">
-                <div class="profile-avatar-wrapper">
-                    <img id="profilePicPreview" class="profile-avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 50 50'><rect width='100%' height='100%' fill='%2394a3b8'/></svg>" alt="Profile Picture Preview">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="profilePicInput">Change Profile Picture</label>
-                <input type="file" id="profilePicInput" accept="image/*" class="form-input" style="border: none; padding: 5px 0;">
-            </div>
-
-            <div class="form-group">
-                <label for="coverPhotoInput">Change Cover Photo</label>
-                <input type="file" id="coverPhotoInput" accept="image/*" class="form-input" style="border: none; padding: 5px 0;">
-            </div>
-
-            <div class="form-group">
-                <label for="profileUsername">Username</label>
-                <input type="text" id="profileUsername" class="form-input" placeholder="Your username" value="HandfaceUser">
-            </div>
-            
-            <div class="form-group">
-                <label for="profileBio">Bio</label>
-                <textarea id="profileBio" class="textarea" placeholder="Tell us about yourself..."></textarea>
-            </div>
-            
-            <button class="submit-btn" id="saveProfileBtn">Update Profile Details</button>
-        </div>
-    </main>
-
-    <nav class="bottom-nav">
-        <button class="icon-btn" id="navHomeBtn" title="Home">🏠</button>
-        <button class="icon-btn" id="openUploadBtn" title="Create Post">➕</button>
-        <button class="icon-btn" id="openAdBtn" title="Create Campaign Ad" style="color: #ff9900;">📢</button>
-        <button class="icon-btn" title="Notifications">🔔</button>
-        <button class="icon-btn" id="navMessagesBtn" title="Messages">💬</button>
-    </nav>
-
-    <script>
-        const BACKEND_URL = "http://localhost:5000/api";
-
-        const logoHomeLink = document.getElementById('logoHomeLink');
-        const navHomeBtn = document.getElementById('navHomeBtn');
-        const profileViewBtn = document.getElementById('profileViewBtn');
-        const navMessagesBtn = document.getElementById('navMessagesBtn');
-        
-        const feedViewContainer = document.getElementById('feedViewContainer');
-        const profileViewContainer = document.getElementById('profileViewContainer');
-        const messagesViewContainer = document.getElementById('messagesViewContainer');
-        const feedContent = document.getElementById('feedContent');
-        const emptyState = document.getElementById('emptyState');
-
-        const openUploadBtn = document.getElementById('openUploadBtn');
-        const uploadPanel = document.getElementById('uploadPanel');
-        const openAdBtn = document.getElementById('openAdBtn');
-        const adPanel = document.getElementById('adPanel');
-
-        window.addEventListener('DOMContentLoaded', loadFeedData);
-
-        openUploadBtn.addEventListener('click', () => { showHomeView(); adPanel.classList.remove('active'); uploadPanel.classList.toggle('active'); });
-        openAdBtn.addEventListener('click', () => { showHomeView(); uploadPanel.classList.remove('active'); adPanel.classList.toggle('active'); });
-        
-        profileViewBtn.addEventListener('click', showProfileView);
-        navMessagesBtn.addEventListener('click', showMessagesView);
-        navHomeBtn.addEventListener('click', showHomeView);
-        logoHomeLink.addEventListener('click', (e) => { e.preventDefault(); showHomeView(); });
-
-        function showHomeView() {
-            toggleNavState(navHomeBtn);
-            profileViewContainer.style.display = "none";
-            messagesViewContainer.style.display = "none";
-            feedViewContainer.style.display = "block";
-        }
-
-        function showProfileView() {
-            toggleNavState(profileViewBtn);
-            uploadPanel.classList.remove('active'); adPanel.classList.remove('active');
-            feedViewContainer.style.display = "none";
-            messagesViewContainer.style.display = "none";
-            profileViewContainer.style.display = "block";
-        }
-
-        function showMessagesView() {
-            toggleNavState(navMessagesBtn);
-            uploadPanel.classList.remove('active'); adPanel.classList.remove('active');
-            feedViewContainer.style.display = "none";
-            profileViewContainer.style.display = "none";
-            messagesViewContainer.style.display = "block";
-            scrollToBottom();
-        }
-
-        function toggleNavState(activeBtn) {
-            document.querySelectorAll('.bottom-nav .icon-btn, .header .icon-btn').forEach(btn => btn.classList.remove('active'));
-            if (activeBtn) activeBtn.classList.add('active');
-        }
-
-        // Handle structural media uploads locally to map preview assets instantly
-        document.getElementById('profilePicInput').addEventListener('change', function(e) {
-            if(e.target.files && e.target.files[0]) {
-                document.getElementById('profilePicPreview').src = URL.createObjectURL(e.target.files[0]);
-            }
-        });
-
-        document.getElementById('coverPhotoInput').addEventListener('change', function(e) {
-            if(e.target.files && e.target.files[0]) {
-                document.getElementById('coverPhotoPreview').src = URL.createObjectURL(e.target.files[0]);
-            }
-        });
-
-        document.querySelectorAll('.follower-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.follower-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                const targetUser = item.getAttribute('data-username');
-                document.getElementById('chatHeaderName').textContent = targetUser;
-                document.getElementById('chatMessagesBox').innerHTML = `
-                    <div class="message-bubble received">Hey there! This is the start of your message history with ${targetUser}.</div>
-                `;
-            });
-        });
-
-        const chatInputField = document.getElementById('chatInputField');
-        const chatMessagesBox = document.getElementById('chatMessagesBox');
-        
-        document.getElementById('sendMsgBtn').addEventListener('click', executionMessageSend);
-        chatInputField.addEventListener('keypress', (e) => { if (e.key === 'Enter') executionMessageSend(); });
-
-        async function executionMessageSend() {
-            const msgText = chatInputField.value.trim();
-            if (!msgText) return;
-
-            renderNewBubble(msgText, 'sent');
-            chatInputField.value = "";
-
-            const currentChatPartner = document.getElementById('chatHeaderName').textContent;
-            setTimeout(() => {
-                renderNewBubble(`Thanks for the message! This is an automated response from ${currentChatPartner}.`, 'received');
-            }, 1500);
-
-            try {
-                await fetch(`${BACKEND_URL}/messages`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ recipient: currentChatPartner, message: msgText })
-                });
-            } catch (err) {
-                console.error("Message sync dropped:", err);
-            }
-        }
-
-        function renderNewBubble(text, direction) {
-            const bubble = document.createElement('div');
-            bubble.className = `message-bubble ${direction}`;
-            bubble.textContent = text;
-            chatMessagesBox.appendChild(bubble);
-            scrollToBottom();
-        }
-
-        function scrollToBottom() { chatMessagesBox.scrollTop = chatMessagesBox.scrollHeight; }
-
-        // NEW: Profile save update method capturing local files to pass up to server
-        document.getElementById('saveProfileBtn').addEventListener('click', async () => {
-            const username = document.getElementById('profileUsername').value.trim();
-            const bio = document.getElementById('profileBio').value.trim();
-            if (!username) { alert("Username field cannot be left blank."); return; }
-
-            // Placeholder vars for remote hosted image locations
-            let avatarUrl = document.getElementById('profilePicPreview').src;
-            let coverUrl = document.getElementById('coverPhotoPreview').src;
-
-            // In production, you would run FormData append uploads here to Cloudinary/S3 prior to saving
-            try {
-                const response = await fetch(`${BACKEND_URL}/profile`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, bio, avatar_url: avatarUrl, cover_url: coverUrl })
-                });
-                if (response.ok) { alert("Profile updated successfully!"); showHomeView(); }
-            } catch (err) { 
-                console.error(err);
-                alert("Profile changes tracked locally!"); 
-                showHomeView();
-            }
-        });
-
-        document.getElementById('submitPostBtn').addEventListener('click', async () => {
-            const text = document.getElementById('postText').value;
-            const fileInput = document.getElementById('postFile');
-            const file = fileInput.files[0];
-
-            let mediaUrl = "";
-            let mediaType = "text";
-            if (!text && !file) { alert("Please add text or select a media file to post."); return; }
-
-            if (file) {
-                const formData = new FormData();
-                formData.append("file", file);
-                formData.append("upload_preset", "mzyuvxdm"); 
-                mediaType = file.type.startsWith("video/") ? "video" : "image";
-
-                try {
-                    const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/dfqvmomaw/${mediaType}/upload`, { method: "POST", body: formData });
-                    const cloudinaryData = await cloudinaryResponse.json();
-                    mediaUrl = cloudinaryData.secure_url;
-                } catch (err) { alert("Media upload failed."); return; }
-            }
-
-            try {
-                const backendResponse = await fetch(`${BACKEND_URL}/posts`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text, mediaUrl, mediaType })
-                });
-                const data = await backendResponse.json();
-                renderPostToStream(data);
-                document.getElementById('postText').value = ""; fileInput.value = ""; uploadPanel.classList.remove('active');
-                alert("Posted successfully!");
-            } catch (err) { alert("Backend post failed."); }
-        });
-
-        document.getElementById('submitAdBtn').addEventListener('click', async () => {
-            const brandName = document.getElementById('adBrandInput').value.trim();
-            const budget = parseInt(document.getElementById('adBudgetInput').value);
-            const adContent = document.getElementById('adTextArea').value.trim();
-
-            if (!brandName || !adContent || isNaN(budget)) { 
-                alert("Please complete all form input fields to submit your ad."); 
-                return; 
-            }
-
-            if (budget < 500) {
-                alert("The minimal campaign distribution budget requirement is ₦500 a day.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/ads`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ brand_name: brandName, ad_content: adContent, daily_budget: budget })
-                });
-                const savedAd = await response.json();
-                renderAdToStream(savedAd);
-                document.getElementById('adBrandInput').value = ""; 
-                document.getElementById('adTextArea').value = "";
-                document.getElementById('adBudgetInput').value = "500";
-                adPanel.classList.remove('active');
-                alert(`Advertisement launched successfully with a daily budget of ₦${budget}!`);
-            } catch (err) { alert("Ad creation failure."); }
-        });
-
-        async function boostPost(textContent, originalMediaUrl) {
-            const budgetInput = prompt("Enter your desired daily allocation budget for this boost campaign (Minimum ₦500):", "500");
-            if (budgetInput === null) return;
-
-            const budget = parseInt(budgetInput);
-            if (isNaN(budget) || budget < 500) {
-                alert("Invalid configuration. Budget allocation must evaluate to ₦500 or higher.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/ads`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ brand_name: "Boosted Post", ad_content: textContent, media_url: originalMediaUrl, daily_budget: budget })
-                });
-                if (response.ok) { 
-                    const savedAd = await response.json(); 
-                    renderAdToStream(savedAd); 
-                    alert(`Post boosted successfully with a daily budget of ₦${budget}! 🚀`); 
-                }
-            } catch (err) { alert("Server error during post boosting."); }
-        }
-
-        async function toggleFollowStatus(buttonElement, targetUserId) {
-            const isFollowing = buttonElement.classList.contains('following');
-            const targetEndpoint = isFollowing ? '/unfollow' : '/follow';
-
-            try {
-                const response = await fetch(`${BACKEND_URL}${targetEndpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: targetUserId })
-                });
-
-                if (response.ok) {
-                    if (isFollowing) {
-                        buttonElement.classList.remove('following');
-                        buttonElement.textContent = "Follow";
-                    } else {
-                        buttonElement.classList.add('following');
-                        buttonElement.textContent = "Following";
-                    }
-                }
-            } catch (err) {
-                buttonElement.classList.toggle('following');
-                buttonElement.textContent = buttonElement.classList.contains('following') ? "Following" : "Follow";
-            }
-        }
-
-        async function loadFeedData() {
-            try {
-                const resPosts = await fetch(`${BACKEND_URL}/posts`);
-                if (resPosts.ok) {
-                    const posts = await resPosts.json();
-                    if (posts.length > 0 && emptyState) emptyState.remove();
-                    posts.forEach(post => renderPostToStream(post));
-                }
-                const resAds = await fetch(`${BACKEND_URL}/ads`);
-                if (resAds.ok) {
-                    const ads = await resAds.json();
-                    if (ads.length > 0 && emptyState) emptyState.remove();
-                    ads.forEach(ad => renderAdToStream(ad));
-                }
-            } catch (err) { console.error("Database sync failed:", err); }
-        }
-
-        function renderPostToStream(post) {
-            if (emptyState) emptyState.remove();
-            const newCard = document.createElement('div');
-            newCard.className = 'feed-card';
-            const userId = post.user_id || "user_" + Math.random().toString(36).substr(2, 5);
-
-            let cardHTML = `
-                <div class="post-header-row">
-                    <div class="post-user-info">By: @${post.username || 'User'} 👤</div>
-                    <button class="follow-inline-btn" data-userid="${userId}">Follow</button>
-                </div>
-            `;
-            
-            const text = post.text || post.text_content || "";
-            if (text) cardHTML += `<p class="post-text">${text}</p>`;
-            const url = post.mediaUrl || post.media_url || "";
-            const type = post.mediaType || post.media_type || "";
-
-            if (url) {
-                if (type === "video" || url.includes("/video/upload/") || url.endsWith(".mp4")) {
-                    cardHTML += `<video class="feed-media" controls muted><source src="${url}" type="video/mp4"></video>`;
-                } else {
-                    cardHTML += `<img src="${url}" class="feed-media" alt="Post attachment image">`;
-                }
-            }
-            newCard.innerHTML = cardHTML;
-
-            const followBtn = newCard.querySelector('.follow-inline-btn');
-            followBtn.addEventListener('click', () => toggleFollowStatus(followBtn, userId));
-
-            const boostBtn = document.createElement('button');
-            boostBtn.className = 'boost-panel-btn'; boostBtn.innerHTML = `🚀 Boost Post`;
-            boostBtn.addEventListener('click', () => boostPost(text, url));
-            newCard.appendChild(boostBtn);
-            
-            feedContent.insertBefore(newCard, feedContent.firstChild);
-        }
-
-        function renderAdToStream(ad) {
-            if (emptyState) emptyState.remove();
-            const newAdCard = document.createElement('div');
-            newAdCard.className = 'feed-card sponsored-ad';
-            const displayBudget = ad.daily_budget || ad.dailyBudget || "500";
-
-            newAdCard.innerHTML = `
-                <div style="font-weight: bold; color: #ff9900; font-size: 11px; text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between;">
-                    <span>Sponsored Advertisement</span>
-                    <span>Budget: ₦${displayBudget}/day</span>
-                </div>
-                <div class="post-user-info" style="color: #4f46e5;">Brand: ${ad.brand_name || ad.brandName} 📣</div>
-                <p class="post-text" style="font-style: italic;">${ad.ad_content || ad.text_content || ad.text}</p>
-            `;
-            feedContent.insertBefore(newAdCard, feedContent.firstChild);
-        }
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('PWA active:', reg.scope))
-                    .catch(err => console.error('Service worker failed:', err));
-            });
-        }
-    </script>
-</body>
-</html>

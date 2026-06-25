@@ -21,129 +21,329 @@
         /* Bottom Navigation Bar Layout */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
         
-        .icon-btn { background: none; border: none; cursor: pointer; font-size: 22px; color: #4b5563; transition: color 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .icon-btn { background: none; border: none; cursor: pointer; font-size: 22px; color: #4b5563; transition: color 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
         .icon-btn:hover, .icon-btn.active { color: #4f46e5; }
         
-        .feed-container, .profile-container, .messages-container { max-width: 600px; margin: 20px auto; padding: 0 20px; }
-        .profile-container, .messages-container { display: none; }
+        /* Global Floating Action Creator Button (+ Button) */
+        .floating-add-btn {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .floating-add-btn:hover { background-color: #4338ca; transform: scale(1.05); }
+        .floating-add-btn:active { transform: scale(0.95); }
+
+        .feed-container, .messages-container, .notifications-container, .profile-container { max-width: 600px; margin: 20px auto; padding: 0 20px; width: 100%; }
         
         /* Feed Cards for Posts & Ads */
         .feed-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #e5e7eb; position: relative; }
         
         .post-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .post-user-info { font-weight: 600; font-size: 14px; color: #4b5563; display: flex; align-items: center; gap: 4px; }
+        .post-user-info { font-weight: 600; font-size: 14px; color: #4b5563; display: flex; align-items: center; gap: 6px; }
         
-        .follow-inline-btn { background: #4f46e5; color: white; border: none; padding: 4px 10px; font-size: 12px; font-weight: 600; border-radius: 14px; cursor: pointer; transition: all 0.2s; }
+        .follow-inline-btn { background: #4f46e5; color: white; border: none; padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 14px; cursor: pointer; transition: all 0.2s; }
         .follow-inline-btn.following { background: #e5e7eb; color: #4b5563; }
         .follow-inline-btn:hover { opacity: 0.9; }
 
-        .post-text { font-size: 15px; color: #1f2937; line-height: 1.5; }
-        .feed-media { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e5e7eb; display: block; }
+        .post-text { font-size: 15px; color: #1f2937; line-height: 1.5; margin-bottom: 8px; }
+        .feed-media { width: 100%; max-height: 450px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid #e5e7eb; display: block; }
         
         .boost-panel-btn { background: none; border: 1px solid #dfdfdf; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #6b7280; cursor: pointer; margin-top: 14px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px; }
         .boost-panel-btn:hover { background: #f5f3ff; color: #4f46e5; border-color: #c7d2fe; }
-        .sponsored-ad { border-left: 4px solid #ff9900; background-color: #fffbeb; }
-        
-        .empty-state { text-align: center; margin-top: 80px; color: #6b7280; }
-        .empty-state svg { width: 80px; height: 80px; color: #9ca3af; margin-bottom: 16px; }
-        .empty-state h3 { font-size: 18px; color: #374151; margin-bottom: 4px; }
         
         /* Panels & Forms */
         .upload-panel, .ad-panel, .profile-panel { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 24px; display: none; }
-        .upload-panel.active, .ad-panel.active { display: block; }
+        .upload-panel.active { display: block; }
         
-        .textarea, .form-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
+        .textarea, .form-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 14px; }
         .textarea { height: 80px; resize: none; }
-        .form-input { font-size: 14px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #4b5563; }
         
         .submit-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 500; width: 100%; }
         .submit-btn:hover { background: #4338ca; }
-        .submit-btn.orange-btn { background: #ff9900; color: white; }
-        .submit-btn.orange-btn:hover { background: #e08500; }
 
         /* Extended Profile Branding Headers Graphics Preview Slots */
-        .profile-branding-container { width: 100%; position: relative; margin-bottom: 75px; background: #e5e7eb; border-radius: 8px; }
-        .profile-cover-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: #cbd5e1; display: block; }
-        .profile-avatar-wrapper { position: absolute; bottom: -50px; left: 20px; width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; background: #94a3b8; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .profile-branding-container { width: 100%; position: relative; margin-bottom: 65px; background: #e5e7eb; border-radius: 12px; overflow: visible; }
+        .profile-cover-preview { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; background: #cbd5e1; display: block; }
+        .profile-avatar-wrapper { position: absolute; bottom: -45px; left: 20px; width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; background: #94a3b8; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
         .profile-avatar-preview { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-meta-info { margin-top: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .profile-name { font-size: 22px; font-weight: 700; color: #1f2937; }
+        .profile-handle { font-size: 14px; color: #6b7280; }
+        .profile-stats { font-size: 14px; color: #4b5563; font-weight: 500; display: flex; gap: 15px; }
 
         /* Messages Panel Layout */
         .chat-layout { background: white; border: 1px solid #e5e7eb; border-radius: 12px; display: flex; height: 500px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .chat-sidebar { width: 35%; border-right: 1px solid #e5e7eb; background: #f9fafb; overflow-y: auto; }
         .sidebar-header { padding: 15px; font-weight: bold; border-bottom: 1px solid #e5e7eb; font-size: 14px; color: #4b5563; }
-        .follower-item { padding: 12px 15px; display: flex; align-items: center; gap: 10px; cursor: pointer; border-bottom: 1px solid #f3f4f6; font-size: 14px; transition: background 0.2s; }
-        .follower-item:hover, .follower-item.active { background: #e0e7ff; color: #4f46e5; }
-        .avatar { width: 32px; height: 32px; background: #d1d5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
         
         .chat-window { width: 65%; display: flex; flex-direction: column; background: white; }
-        .chat-window-header { padding: 15px; border-bottom: 1px solid #e5e7eb; font-weight: 600; font-size: 15px; }
         .chat-messages-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f3f4f6; }
-        
-        /* Message Bubbles */
-        .message-bubble { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.4; word-break: break-word; }
-        .message-bubble.sent { background: #4f46e5; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .message-bubble.received { background: white; color: #1f2937; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #e5e7eb; }
-        
         .chat-input-area { padding: 12px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; background: white; }
         .chat-input { flex: 1; border: 1px solid #d1d5db; border-radius: 20px; padding: 8px 16px; font-size: 14px; outline: none; }
         .chat-send-btn { background: #4f46e5; color: white; border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Notifications Styles */
+        .notification-card { background: white; padding: 16px; border-radius: 10px; border: 1px solid #e5e7eb; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .notification-icon { width: 36px; height: 36px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .notification-content { font-size: 14px; color: #1f2937; }
+        .notification-time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
     </style>
 </head>
 <body>
 
     <header class="header">
         <a href="#" class="logo" id="logoHomeLink">Handface</a>
-        <button class="icon-btn" id="profileViewBtn" title="My Profile">👤</button>
+        <button class="icon-btn" id="profileViewBtn" title="My Profile" style="width: auto;">👤</button>
     </header>
 
-    <main class="feed-container" id="feedViewContainer">
+    <button class="floating-add-btn" id="globalAddContentBtn" title="Create a Post">+</button>
+
+    <main class="feed-container" id="feedViewContainer" style="display: block;">
         <div class="upload-panel" id="uploadPanel">
             <textarea id="postText" class="textarea" placeholder="What's on your mind?"></textarea>
             <input type="file" id="postFile" accept="image/*,video/*" style="margin-bottom: 12px; display: block;">
             <button class="submit-btn" id="submitPostBtn" style="width: auto;">Share to Feed</button>
         </div>
 
-        <div class="ad-panel" id="adPanel">
-            <h3 style="margin-bottom: 12px;">Create Sponsored Ad</h3>
-            <div class="form-group">
-                <label for="adBrandName">Brand Name</label>
-                <input type="text" id="adBrandName" class="form-input" placeholder="e.g. Acme Corp">
-            </div>
-            <div class="form-group">
-                <label for="adContentText">Ad Message</label>
-                <textarea id="adContentText" class="textarea" placeholder="Write your advertisement copy here..."></textarea>
-            </div>
-            <button class="submit-btn orange-btn" id="submitAdBtn">Deploy Sponsored Ad</button>
-        </div>
-
-        <div class="messages-container" id="messagesViewPanel" style="display: block; max-width: 100%; margin: 20px 0;">
-            <div class="chat-layout">
-                <div class="chat-sidebar">
-                    <div class="sidebar-header">Direct Messages</div>
-                    <div id="followersListContainer">
-                        </div>
-                </div>
-                
-                <div class="chat-window">
-                    <div class="chat-window-header" id="activeChatHeader">Select a user to chat</div>
-                    <div class="chat-messages-box" id="liveChatMessagesBox">
-                        </div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chatMessageInput" class="chat-input" placeholder="Type a message...">
-                        <button class="chat-send-btn" id="sendMessageActionBtn">➔</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="masterFeedStream"></div>
     </main>
 
+    <div class="messages-container" id="messagesViewPanel" style="display: none;">
+        <div class="chat-layout">
+            <div class="chat-sidebar">
+                <div class="sidebar-header">Direct Messages</div>
+                <div id="followersListContainer"></div>
+            </div>
+            <div class="chat-window">
+                <div class="chat-window-header" id="activeChatHeader">Select a user to chat</div>
+                <div class="chat-messages-box" id="liveChatMessagesBox"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatMessageInput" class="chat-input" placeholder="Type a message...">
+                    <button class="chat-send-btn" id="sendMessageActionBtn">➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notifications-container" id="notificationsViewPanel" style="display: none;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1f2937;">Notifications</h2>
+        <div id="liveNotificationsContainer">
+            <div class="notification-card">
+                <div class="notification-icon">🔔</div>
+                <div class="notification-content">
+                    <div>Welcome to <strong>Handface</strong>! Your live notifications center is now active.</div>
+                    <div class="notification-time">Just now</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-container" id="profileViewContainer" style="display: none;">
+        <div class="profile-branding-container">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='180' viewBox='0 0 600 180'><rect width='100%' height='100%' fill='%23cbd5e1'/></svg>" class="profile-cover-preview" id="userCoverPreview" alt="Profile Cover">
+            <div class="profile-avatar-wrapper">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%2394a3b8'/></svg>" class="profile-avatar-preview" id="userAvatarPreview" alt="Profile Avatar">
+            </div>
+        </div>
+
+        <div class="profile-meta-info">
+            <div>
+                <div class="profile-name" id="profileDisplayName">Handface Creator</div>
+                <div class="profile-handle" id="profileDisplayHandle">@creator_account</div>
+            </div>
+            <div class="profile-stats">
+                <div><span id="followingCount">0</span> Following</div>
+            </div>
+        </div>
+
+        <div class="profile-panel" style="display: block;">
+            <h3 style="font-size: 16px; margin-bottom: 14px; color: #374151;">Update Branding Graphics Assets</h3>
+            
+            <div style="margin-bottom: 14px;">
+                <label style="display:block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #4b5563;">Upload Avatar Picture</label>
+                <input type="file" id="uploadAvatarFile" accept="image/*">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #4b5563;">Upload Cover Picture</label>
+                <input type="file" id="uploadCoverFile" accept="image/*">
+            </div>
+            
+            <button class="submit-btn" id="saveBrandingAssetsBtn">Save Profile Modifications</button>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
-        <button class="icon-btn active" title="Home Feed">🏠</button>
-        <button class="icon-btn" title="Messages">💬</button>
-        <button class="icon-btn" title="Notifications">🔔</button>
+        <button class="icon-btn active" id="navHomeBtn" title="Home Feed">🏠</button>
+        <button class="icon-btn" id="navMessagesBtn" title="Messages">💬</button>
+        <button class="icon-btn" id="navNotificationsBtn" title="Notifications">🔔</button>
     </nav>
 
+    <script>
+        // DOM Hooks for structural viewing panel switching navigation mechanics
+        const navHomeBtn = document.getElementById('navHomeBtn');
+        const navMessagesBtn = document.getElementById('navMessagesBtn');
+        const navNotificationsBtn = document.getElementById('navNotificationsBtn');
+        const profileViewBtn = document.getElementById('profileViewBtn');
+
+        const feedViewContainer = document.getElementById('feedViewContainer');
+        const messagesViewPanel = document.getElementById('messagesViewPanel');
+        const notificationsViewPanel = document.getElementById('notificationsViewPanel');
+        const profileViewContainer = document.getElementById('profileViewContainer');
+
+        // Follow System Data Store Tracker
+        let followedUsers = new Set();
+        // Mock unique generator tracking to demonstrate cross-card follow actions cleanly
+        let userSeedIndex = 1;
+
+        // Central workspace window layout manager
+        function switchWorkspaceView(activeButton, activePanel) {
+            [navHomeBtn, navMessagesBtn, navNotificationsBtn, profileViewBtn].forEach(btn => btn.classList.remove('active'));
+            [feedViewContainer, messagesViewPanel, notificationsViewPanel, profileViewContainer].forEach(panel => panel.style.display = 'none');
+
+            if (activeButton) activeButton.classList.add('active');
+            activePanel.style.display = 'block';
+        }
+
+        // Apply interactive view triggers
+        navHomeBtn.addEventListener('click', () => switchWorkspaceView(navHomeBtn, feedViewContainer));
+        navMessagesBtn.addEventListener('click', () => switchWorkspaceView(navMessagesBtn, messagesViewPanel));
+        navNotificationsBtn.addEventListener('click', () => switchWorkspaceView(navNotificationsBtn, notificationsViewPanel));
+        profileViewBtn.addEventListener('click', () => switchWorkspaceView(profileViewBtn, profileViewContainer));
+
+        // Toggle creator box closure
+        document.getElementById('globalAddContentBtn').addEventListener('click', () => {
+            switchWorkspaceView(navHomeBtn, feedViewContainer);
+            const panel = document.getElementById('uploadPanel');
+            panel.classList.toggle('active');
+        });
+
+        // Real-Time Local File Graph Image previewers engine hooks
+        document.getElementById('uploadAvatarFile').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                document.getElementById('userAvatarPreview').src = URL.createObjectURL(this.files[0]);
+            }
+        });
+
+        document.getElementById('uploadCoverFile').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                document.getElementById('userCoverPreview').src = URL.createObjectURL(this.files[0]);
+            }
+        });
+
+        document.getElementById('saveBrandingAssetsBtn').addEventListener('click', () => {
+            alert("Changes saved locally!");
+            switchWorkspaceView(navHomeBtn, feedViewContainer);
+        });
+
+        // Dynamic Post Renderer Engine
+        function renderPostToStream(textContent, fileInputId) {
+            const stream = document.getElementById('masterFeedStream');
+            const fileInput = document.getElementById(fileInputId);
+            
+            if (!textContent && (!fileInput || fileInput.files.length === 0)) {
+                alert("Please add some content before sharing!");
+                return;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'feed-card';
+            
+            // Assign a unique user handle string to this card instance
+            const dynamicUserHandle = `user_vertex_${userSeedIndex++}`;
+
+            let cardHTML = `
+                <div class="post-header-row">
+                    <div class="post-user-info">👤 <span>@${dynamicUserHandle}</span></div>
+                    <button class="follow-inline-btn" data-user-id="${dynamicUserHandle}">Follow</button>
+                </div>
+            `;
+
+            if (textContent) {
+                cardHTML += `<p class="post-text">${textContent}</p>`;
+            }
+
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const mediaUrl = URL.createObjectURL(file);
+
+                if (file.type.startsWith('video/')) {
+                    cardHTML += `
+                        <video class="feed-media" controls muted placement="viewport">
+                            <source src="${mediaUrl}" type="${file.type}">
+                        </video>
+                    `;
+                } else if (file.type.startsWith('image/')) {
+                    cardHTML += `<img src="${mediaUrl}" class="feed-media" alt="Post attachment image">`;
+                }
+            }
+
+            cardHTML += `<button class="boost-panel-btn">⚡ Boost Post</button>`;
+            card.innerHTML = cardHTML;
+
+            // Hook Event Listener directly onto the specific element instance
+            const followBtn = card.querySelector('.follow-inline-btn');
+            followBtn.addEventListener('click', function() {
+                const targetUser = this.getAttribute('data-user-id');
+                
+                if (followedUsers.has(targetUser)) {
+                    followedUsers.delete(targetUser);
+                    this.textContent = 'Follow';
+                    this.classList.remove('following');
+                    triggerNotification(`Unfollowed @${targetUser}`);
+                } else {
+                    followedUsers.add(targetUser);
+                    this.textContent = 'Following';
+                    this.classList.add('following');
+                    triggerNotification(`Started following @${targetUser}`);
+                }
+                
+                // Update stats counter displayed in profile tab dynamically
+                document.getElementById('followingCount').textContent = followedUsers.size;
+            });
+
+            stream.prepend(card);
+
+            document.getElementById('postText').value = "";
+            if (fileInput) fileInput.value = "";
+            document.getElementById('uploadPanel').classList.remove('active');
+        }
+
+        // Helper function to dynamically feed entries into our activated alert tray tab
+        function triggerNotification(messageText) {
+            const container = document.getElementById('liveNotificationsContainer');
+            const alertCard = document.createElement('div');
+            alertCard.className = 'notification-card';
+            alertCard.innerHTML = `
+                <div class="notification-icon">👤</div>
+                <div class="notification-content">
+                    <div>${messageText}</div>
+                    <div class="notification-time">Just now</div>
+                </div>
+            `;
+            container.prepend(alertCard);
+        }
+
+        document.getElementById('submitPostBtn').addEventListener('click', () => {
+            const textValue = document.getElementById('postText').value.trim();
+            renderPostToStream(textValue, 'postFile');
+        });
+    </script>
 </body>
 </html>

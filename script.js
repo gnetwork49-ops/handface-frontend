@@ -216,4 +216,8 @@ function closeModal() {
     if (mediaFileInput) mediaFileInput.value = "";
     if (fileNameDisplay) fileNameDisplay.textContent = "No file selected";
 }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Service Worker Registered'));
+}
 

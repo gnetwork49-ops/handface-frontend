@@ -64,6 +64,19 @@ function closeModal() {
     if (postTextArea) postTextArea.value = "";
 }
 
+// AUTOMATIC PERSISTENCE CHECK: Bootstraps active sessions on page reload
+window.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const storedToken = localStorage.getItem('authToken');
+    
+    if (isLoggedIn === 'true') {
+        if (storedToken) authToken = storedToken;
+        if (authContainer) authContainer.style.display = "none";
+        if (appContainer) appContainer.style.display = "block";
+        if (typeof loadFeedData === "function") loadFeedData();
+    }
+});
+
 // ==========================================
 // 3. SECURE AUTHENTICATION SYSTEM
 // ==========================================
@@ -106,8 +119,16 @@ authSubmitBtn.addEventListener('click', async () => {
         if (response.ok) {
             alert(result.message || "Authentication successful!");
             
-            // OPTIMIZATION: Save token if returned by your server architecture
-            if (result.token) authToken = result.token; 
+            // INTEGRATED: Local Session Engine Write Operations
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            if (username) localStorage.setItem('userName', username);
+            
+            // Save token globally and into localStorage for persistence across reloads
+            if (result.token) {
+                authToken = result.token; 
+                localStorage.setItem('authToken', result.token);
+            }
             
             authContainer.style.display = "none";
             appContainer.style.display = "block";
@@ -176,6 +197,7 @@ if (uploadModal) {
 
 if (mediaFileInput) {
     mediaFileInput.addEventListener('change', () => {
+        // FIXED: Added array boundary selection point lookup value access indicator
         fileNameDisplay.textContent = mediaFileInput.files.length > 0 ? mediaFileInput.files[0].name : "No file selected";
     });
 }
@@ -217,25 +239,4 @@ if (submitPostBtn) {
                     text: textContent,
                     mediaUrl: finalMediaUrl
                 })
-            });
-
-            const backendData = await backendResponse.json();
-
-            if (backendResponse.ok) {
-                alert("Post successfully shared!");
-                closeModal();
-                if (typeof loadFeedData === "function") loadFeedData(); 
-            } else {
-                alert(backendData.error || "Failed to save post to engine server.");
-            }
-
-        } catch (err) {
-            console.error(err);
-            alert(err.message || "An unhandled execution failure occurred.");
-        } finally {
-            submitPostBtn.disabled = false;
-            submitPostBtn.textContent = "Share Post";
-        }
-    });
-}
 

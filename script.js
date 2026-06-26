@@ -7,6 +7,10 @@ const BACKEND_URL = "http://92.4.141.75:3000";
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dfqvmomaw/auto/upload"; 
 const UPLOAD_PRESET = "mzyuvxdm";
 
+// Global Session State Store
+let authToken = null;
+let isLoginMode = true;
+
 // ==========================================
 // 2. DOM ELEMENT HOOKS
 // ==========================================
@@ -49,7 +53,16 @@ const adViewContainer = document.getElementById('adViewContainer');
 const messagesViewPanel = document.getElementById('messagesViewPanel') || document.getElementById('messagesView');
 const feedViewContainer = document.getElementById('feedViewContainer') || document.getElementById('homeView');
 
-let isLoginMode = true;
+// Helper function to safely shut down input modals
+function closeModal() {
+    if (uploadModal) uploadModal.style.display = 'none';
+    if (adModal) adModal.style.display = 'none';
+    
+    // Clean fields safely on close
+    if (mediaFileInput) mediaFileInput.value = "";
+    if (fileNameDisplay) fileNameDisplay.textContent = "No file selected";
+    if (postTextArea) postTextArea.value = "";
+}
 
 // ==========================================
 // 3. SECURE AUTHENTICATION SYSTEM
@@ -92,6 +105,10 @@ authSubmitBtn.addEventListener('click', async () => {
 
         if (response.ok) {
             alert(result.message || "Authentication successful!");
+            
+            // OPTIMIZATION: Save token if returned by your server architecture
+            if (result.token) authToken = result.token; 
+            
             authContainer.style.display = "none";
             appContainer.style.display = "block";
             if (typeof loadFeedData === "function") loadFeedData(); 
@@ -106,38 +123,34 @@ authSubmitBtn.addEventListener('click', async () => {
 // ==========================================
 // 4. WORKSPACE VIEW NAVIGATION
 // ==========================================
+// Central state view controller safely managing viewport UI mappings
+function showView(activePanel, activeBtn = null) {
+    [feedViewContainer, messagesViewPanel, notificationsViewContainer, adViewContainer].forEach(panel => {
+        if (panel) panel.classList.remove('active');
+    });
+    
+    document.querySelectorAll('.bottom-nav .icon-btn, .nav-link').forEach(btn => btn.classList.remove('active'));
+    
+    if (activePanel) activePanel.classList.add('active');
+    if (activeBtn) activeBtn.classList.add('active');
+}
+
+// Fixed navigation event bindings to use unified state engine
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const linkText = link.textContent.trim().toLowerCase();
-        viewPanels.forEach(panel => panel.classList.remove('active'));
         
-        if (linkText === 'home') document.getElementById('homeView')?.classList.add('active');
-        else if (linkText === 'messages') document.getElementById('messagesView')?.classList.add('active');
-        else if (linkText === 'notifications') document.getElementById('notificationsView')?.classList.add('active');
+        if (linkText === 'home') showView(feedViewContainer, link);
+        else if (linkText === 'messages') showView(messagesViewPanel, link);
+        else if (linkText === 'notifications') showView(notificationsViewContainer, link);
     });
 });
 
 if (videoPromoBanner) {
-    videoPromoBanner.addEventListener('click', () => { adModal.style.display = 'flex'; });
+    videoPromoBanner.addEventListener('click', () => { if (adModal) adModal.style.display = 'flex'; });
 }
 
-// UPDATED SLOT: Standard showView panel layout state controller
-function showView(activePanel, activeBtn = null) {
-    // Hide all main panels safely
-    [feedViewContainer, messagesViewPanel, notificationsViewContainer, adViewContainer].forEach(panel => {
-        if(panel) panel.classList.remove('active');
-    });
-    
-    // Remove active markers from layout navigation system
-    document.querySelectorAll('.bottom-nav .icon-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Show requested workspace panel view target
-    if(activePanel) activePanel.classList.add('active');
-    if (activeBtn) activeBtn.classList.add('active');
-}
-
-// Dynamic Action Triggers with Element Fallback Validation
 if (navNotificationsBtn) {
     navNotificationsBtn.addEventListener('click', () => {
         showView(notificationsViewContainer, navNotificationsBtn);
@@ -177,6 +190,7 @@ if (submitPostBtn) {
         let finalMediaUrl = "";
 
         try {
+            // 1. Cloudinary Asset Dispatch
             if (mediaFileInput.files && mediaFileInput.files.length > 0) {
                 const file = mediaFileInput.files[0];
                 const formData = new FormData();
@@ -184,40 +198,44 @@ if (submitPostBtn) {
                 formData.append("upload_preset", UPLOAD_PRESET);
 
                 const cloudResponse = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
-                if (!cloudResponse.ok) throw new Error("Cloudinary media upload failed. Verify configurations!");
+                if (!cloudResponse.ok) throw new Error("Cloudinary media upload failed.");
+                
                 const cloudData = await cloudResponse.json();
                 finalMediaUrl = cloudData.secure_url;
             }
 
+            // 2. Fixed App-Backend Processing Engine Database Commit
             submitPostBtn.textContent = "Saving to Database... 💾";
+            
+            const postHeaders = { 'Content-Type': 'application/json' };
+            if (authToken) postHeaders['Authorization'] = `Bearer ${authToken}`;
+
             const backendResponse = await fetch(`${BACKEND_URL}/posts`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text_content: textContent, media_url: finalMediaUrl })
+                headers: postHeaders,
+                body: JSON.stringify({
+                    text: textContent,
+                    mediaUrl: finalMediaUrl
+                })
             });
 
-            if (!backendResponse.ok) throw new Error("Database creation failed");
-            const savedPost = await backendResponse.json();
+            const backendData = await backendResponse.json();
 
-            if (typeof renderPostToStream === "function") renderPostToStream(savedPost);
-            closeModal();
-        } catch (error) {
-            alert("Post error: " + error.message);
+            if (backendResponse.ok) {
+                alert("Post successfully shared!");
+                closeModal();
+                if (typeof loadFeedData === "function") loadFeedData(); 
+            } else {
+                alert(backendData.error || "Failed to save post to engine server.");
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "An unhandled execution failure occurred.");
         } finally {
             submitPostBtn.disabled = false;
-            submitPostBtn.textContent = "Post to Feed";
+            submitPostBtn.textContent = "Share Post";
         }
     });
-}
-
-function closeModal() {
-    if (uploadModal) uploadModal.style.display = 'none';
-    if (postTextArea) postTextArea.value = "";
-    if (mediaFileInput) mediaFileInput.value = "";
-    if (fileNameDisplay) fileNameDisplay.textContent = "No file selected";
-}
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-    .then(() => console.log('Service Worker Registered'));
 }
 

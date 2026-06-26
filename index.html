@@ -1,238 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4f46e5">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handface Feed</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #f9fafb; color: #1f2937; padding-bottom: 80px; }
 
-        /* Auth Container Overlay Style mappings */
-        #authContainer { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(243, 244, 246, 0.95); 
-            z-index: 9999; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-        }
-        
-        .auth-card { 
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%; 
-            max-width: 400px; 
-            text-align: center; 
-        }
+    <title>Handface</title>
 
-        .auth-card h2 { margin-bottom: 1.5rem; color: #1f2937; }
-        .form-input { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 14px; }
-        
-        .primary-btn {
-            width: 100%;
-            padding: 12px;
-            background: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 15px;
-        }
-        .primary-btn:hover { background: #4338ca; }
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
 
-        .toggle-link {
-            margin-top: 15px;
-            display: block;
-            color: #6b7280;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        
-        /* Existing Layout Core Styles Retained */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
-        .logo { color: #4f46e5; font-size: 24px; font-weight: bold; text-decoration: none; }
-        .header-actions { display: flex; align-items: center; gap: 10px; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-        .icon-btn { background: none; border: none; cursor: pointer; font-size: 22px; color: #4b5563; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center;}
-        .icon-btn.active { color: #4f46e5; }
-        .floating-add-btn { position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px; background-color: #4f46e5; color: white; border: none; border-radius: 50%; font-size: 28px; cursor: pointer; z-index: 999; }
-        
-        /* Fixed workspace viewport container rules */
-        .feed-container, .messages-container, .notifications-container, .profile-container { max-width: 600px; margin: 20px auto; padding: 0 20px; display: none; }
-        .feed-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e5e7eb; }
-        .submit-btn { background: #4f46e5; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; }
-        .upload-panel, .ad-panel { display: none; background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        
-        /* Global helper classes for display toggles */
-        .active { display: block; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- Auth Overlay Block -->
-    <div id="authContainer">
-        <div class="auth-card">
-            <h2 id="authTitle">Login to Handface</h2>
-            
-            <input type="text" id="authUsername" class="form-input" placeholder="Username" style="display: none;">
-            <input type="email" id="authEmail" class="form-input" placeholder="Email Address">
-            <input type="password" id="authPassword" class="form-input" placeholder="Password">
-            
-            <button id="authSubmitBtn" class="primary-btn">Log In</button>
-            
-            <span id="toggleAuthMode" class="toggle-link">Don't have an account? Sign Up</span>
-        </div>
+<!-- ==========================
+     LOGIN / REGISTER
+========================== -->
+
+<div id="authContainer" class="auth-container">
+
+    <div class="auth-card">
+
+        <h2 id="authTitle">Login to Handface</h2>
+
+        <input
+            type="text"
+            id="authUsername"
+            placeholder="Username"
+            class="input"
+            style="display:none;"
+        >
+
+        <input
+            type="email"
+            id="authEmail"
+            placeholder="Email"
+            class="input"
+        >
+
+        <input
+            type="password"
+            id="authPassword"
+            placeholder="Password"
+            class="input"
+        >
+
+        <button id="authSubmitBtn" class="primary-btn">
+            Log In
+        </button>
+
+        <p
+            id="toggleAuthMode"
+            class="toggle-link"
+        >
+            Don't have an account? Sign Up
+        </p>
+
     </div>
 
-    <header class="header">
-        <a href="#" class="logo" id="logoHomeLink">Handface</a>
-        <div class="header-actions">
-            <button class="icon-btn" id="headerProfileBtn" title="My Profile" style="width: auto; padding: 0 10px; font-size: 20px;">👤</button>
-            <button class="submit-btn" id="logoutBtn" style="width: auto; padding: 5px 15px; margin-top: 0;">Logout</button>
-        </div>
-    </header>
+</div>
 
-    <button class="floating-add-btn" id="globalAddContentBtn">+</button>
+<!-- ==========================
+     MAIN APPLICATION
+========================== -->
 
-    <!-- Workspace View Panels Stream -->
-    <main class="feed-container active" id="feedViewContainer">
-        <div class="upload-panel" id="uploadPanel">
-            <textarea id="postText" class="form-input" style="height: 80px; resize: none;" placeholder="What's on your mind?"></textarea>
-            <button class="submit-btn" id="submitPostBtn">Share</button>
-        </div>
-        <div id="masterFeedStream"></div>
-    </main>
+<div id="appContainer" style="display:none;">
 
-    <!-- Inserted Profile Container Block -->
-    <main class="profile-container" id="profileViewContainer">
-        <div class="feed-card">
-            <h2 style="margin-bottom: 15px;">My Profile</h2>
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #e5e7eb;">
-                <input type="file" id="avatarInput" accept="image/*" style="display: block; margin: 0 auto;">
-            </div>
-            <input type="text" id="profileName" class="form-input" placeholder="Display Name">
-            <button class="submit-btn" id="saveProfileBtn">Save Profile</button>
-        </div>
-    </main>
+<header class="header">
 
-    <!-- Inserted Your Custom Bottom Nav Element Block -->
-    <!-- Updated Bottom Navigation -->
+    <div class="logo">
+        Handface
+    </div>
+
+    <div class="header-right">
+
+        <button
+            id="searchBtn"
+            class="header-btn">
+            🔍
+        </button>
+
+        <button
+            id="profileBtn"
+            class="header-btn">
+            👤
+        </button>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+<!-- Floating Create Post Button -->
+
+<button
+    id="globalAddContentBtn"
+    class="floating-btn">
+    +
+</button
+    <!-- ==========================
+     HOME FEED
+========================== -->
+
+<main id="feedViewContainer" class="view active">
+
+    <div id="masterFeedStream"></div>
+
+</main>
+
+<!-- ==========================
+     PROFILE
+========================== -->
+
+<main id="profileViewContainer" class="view">
+
+    <div class="profile-card">
+
+        <img
+            id="avatarPreview"
+            src="assets/default-avatar.png"
+            class="avatar"
+            alt="Avatar"
+        >
+
+        <input
+            type="file"
+            id="avatarInput"
+            accept="image/*"
+        >
+
+        <input
+            id="profileName"
+            type="text"
+            class="input"
+            placeholder="Display Name"
+        >
+
+        <button
+            id="saveProfileBtn"
+            class="primary-btn">
+            Save Profile
+        </button>
+
+    </div>
+
+</main>
+
+<!-- ==========================
+     MESSAGES
+========================== -->
+
+<main
+    id="messagesViewPanel"
+    class="view">
+
+    <h2>Messages</h2>
+
+    <div id="messagesContainer">
+        No conversations yet.
+    </div>
+
+</main>
+
+<!-- ==========================
+     NOTIFICATIONS
+========================== -->
+
+<main
+    id="notificationsViewContainer"
+    class="view">
+
+    <h2>Notifications</h2>
+
+    <div id="notificationsContainer">
+        No notifications.
+    </div>
+
+</main>
+
+<!-- ==========================
+     ADVERTISEMENTS
+========================== -->
+
+<main
+    id="adViewContainer"
+    class="view">
+
+    <h2>Advertisements</h2>
+
+    <div id="adsContainer"></div>
+
+</main> 
+    <!-- ==========================
+     UPLOAD POST MODAL
+========================== -->
+
+<div id="uploadModal" class="modal">
+
+    <div class="modal-content">
+
+        <span id="closeModalBtn" class="close">&times;</span>
+
+        <h2>Create Post</h2>
+
+        <textarea
+            id="postTextArea"
+            placeholder="What's happening?"
+            class="input"
+            rows="5"></textarea>
+
+        <input
+            type="file"
+            id="mediaFileInput"
+            accept="image/*,video/*">
+
+        <p id="fileNameDisplay">
+            No file selected
+        </p>
+
+        <button
+            id="submitPostBtn"
+            class="primary-btn">
+            Share Post
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ==========================
+     CREATE AD MODAL
+========================== -->
+
+<div id="adModal" class="modal">
+
+    <div class="modal-content">
+
+        <span id="closeAdModalBtn" class="close">&times;</span>
+
+        <h2>Create Advertisement</h2>
+
+        <input
+            id="adBrandInput"
+            class="input"
+            type="text"
+            placeholder="Business Name">
+
+        <textarea
+            id="adTextArea"
+            class="input"
+            rows="5"
+            placeholder="Describe your advertisement"></textarea>
+
+        <button
+            id="submitAdBtn"
+            class="primary-btn">
+            Publish Advertisement
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ==========================
+     BOTTOM NAVIGATION
+========================== -->
+
 <nav class="bottom-nav">
-    <button class="icon-btn active" id="navHomeBtn">🏠</button>
-    <button class="icon-btn" id="navMessagesBtn">💬</button>
-    <button class="icon-btn" id="navNotificationsBtn">🔔</button>
-    <button class="icon-btn" id="navAdBtn">📢</button>
+
+    <button
+        id="navHomeBtn"
+        class="icon-btn active">
+        🏠
+    </button>
+
+    <button
+        id="navMessagesBtn"
+        class="icon-btn">
+        💬
+    </button>
+
+    <button
+        id="navNotificationsBtn"
+        class="icon-btn">
+        🔔
+    </button>
+
+    <button
+        id="navAdBtn"
+        class="icon-btn">
+        📢
+    </button>
+
 </nav>
 
-    <script>
-        // Auth Script Handlers
-        const authContainer = document.getElementById('authContainer');
-        const authTitle = document.getElementById('authTitle');
-        const authUsername = document.getElementById('authUsername');
-        const authEmail = document.getElementById('authEmail');
-        const authPassword = document.getElementById('authPassword');
-        const authSubmitBtn = document.getElementById('authSubmitBtn');
-        const toggleAuthMode = document.getElementById('toggleAuthMode');
-        const logoutBtn = document.getElementById('logoutBtn');
+<script src="app.js"></script>
 
-        let isLoginMode = true;
-
-        toggleAuthMode.addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            if (isLoginMode) {
-                authTitle.textContent = "Login to Handface";
-                authUsername.style.display = "none";
-                authSubmitBtn.textContent = "Log In";
-                toggleAuthMode.textContent = "Don't have an account? Sign Up";
-            } else {
-                authTitle.textContent = "Create Handface Account";
-                authUsername.style.display = "block";
-                authSubmitBtn.textContent = "Register";
-                toggleAuthMode.textContent = "Already have an account? Log In";
-            }
-        });
-
-        authSubmitBtn.addEventListener('click', () => {
-            const email = authEmail.value.trim();
-            const password = authPassword.value.trim();
-            const username = authUsername.value.trim();
-
-            if (!email || !password || (!isLoginMode && !username)) {
-                alert("Please fill out all visible fields.");
-                return;
-            }
-
-            authContainer.style.display = 'none';
-            alert(`Welcome to Handface! Authenticated: ${isLoginMode ? email : username}`);
-        });
-
-        logoutBtn.addEventListener('click', () => {
-            location.reload(); 
-        });
-
-        // Workspace Panels Navigation Switching Logic
-        const navHomeBtn = document.getElementById('navHomeBtn');
-        const navProfileBtn = document.getElementById('navProfileBtn');
-        const headerProfileBtn = document.getElementById('headerProfileBtn');
-        const logoHomeLink = document.getElementById('logoHomeLink');
-        const feedViewContainer = document.getElementById('feedViewContainer');
-        const profileViewContainer = document.getElementById('profileViewContainer');
-        const allNavButtons = document.querySelectorAll('.bottom-nav .icon-btn');
-
-        function showView(activePanel, activeBtn = null) {
-            // Hide all potential display view panels
-            feedViewContainer.classList.remove('active');
-            profileViewContainer.classList.remove('active');
-            
-            // Remove active visual markers from nav system
-            allNavButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Show requested panels
-            activePanel.classList.add('active');
-            if (activeBtn) activeBtn.classList.add('active');
-        }
-
-        navHomeBtn.addEventListener('click', () => {
-            showView(feedViewContainer, navHomeBtn);
-        });
-
-        logoHomeLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView(feedViewContainer, navHomeBtn);
-        });
-
-        // Add this to handle Profile button navigation
-        navProfileBtn.addEventListener('click', () => {
-            showView(profileViewContainer, navProfileBtn);
-        });
-
-        // Add Avatar Upload logic
-        document.getElementById('avatarInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('avatarPreview').src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
 </body>
 </html>
-          
-

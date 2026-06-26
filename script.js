@@ -41,6 +41,14 @@ const navLinks = document.querySelectorAll('.nav-link');
 const viewPanels = document.querySelectorAll('.view-panel');
 const videoPromoBanner = document.getElementById('videoPromoBanner');
 
+// NEW FEATURE HOOKS: Dynamic Panel Elements
+const navNotificationsBtn = document.getElementById('navNotificationsBtn');
+const navAdBtn = document.getElementById('navAdBtn');
+const notificationsViewContainer = document.getElementById('notificationsViewContainer');
+const adViewContainer = document.getElementById('adViewContainer');
+const messagesViewPanel = document.getElementById('messagesViewPanel') || document.getElementById('messagesView');
+const feedViewContainer = document.getElementById('feedViewContainer') || document.getElementById('homeView');
+
 let isLoginMode = true;
 
 // ==========================================
@@ -86,7 +94,7 @@ authSubmitBtn.addEventListener('click', async () => {
             alert(result.message || "Authentication successful!");
             authContainer.style.display = "none";
             appContainer.style.display = "block";
-            loadFeedData(); // Populate database feed contents upon successful login
+            if (typeof loadFeedData === "function") loadFeedData(); 
         } else {
             alert(result.error || "Authentication failed.");
         }
@@ -104,9 +112,9 @@ navLinks.forEach(link => {
         const linkText = link.textContent.trim().toLowerCase();
         viewPanels.forEach(panel => panel.classList.remove('active'));
         
-        if (linkText === 'home') document.getElementById('homeView').classList.add('active');
-        else if (linkText === 'messages') document.getElementById('messagesView').classList.add('active');
-        else if (linkText === 'notifications') document.getElementById('notificationsView').classList.add('active');
+        if (linkText === 'home') document.getElementById('homeView')?.classList.add('active');
+        else if (linkText === 'messages') document.getElementById('messagesView')?.classList.add('active');
+        else if (linkText === 'notifications') document.getElementById('notificationsView')?.classList.add('active');
     });
 });
 
@@ -114,124 +122,98 @@ if (videoPromoBanner) {
     videoPromoBanner.addEventListener('click', () => { adModal.style.display = 'flex'; });
 }
 
+// UPDATED SLOT: Standard showView panel layout state controller
+function showView(activePanel, activeBtn = null) {
+    // Hide all main panels safely
+    [feedViewContainer, messagesViewPanel, notificationsViewContainer, adViewContainer].forEach(panel => {
+        if(panel) panel.classList.remove('active');
+    });
+    
+    // Remove active markers from layout navigation system
+    document.querySelectorAll('.bottom-nav .icon-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Show requested workspace panel view target
+    if(activePanel) activePanel.classList.add('active');
+    if (activeBtn) activeBtn.classList.add('active');
+}
+
+// Dynamic Action Triggers with Element Fallback Validation
+if (navNotificationsBtn) {
+    navNotificationsBtn.addEventListener('click', () => {
+        showView(notificationsViewContainer, navNotificationsBtn);
+    });
+}
+
+if (navAdBtn) {
+    navAdBtn.addEventListener('click', () => {
+        showView(adViewContainer, navAdBtn);
+    });
+}
+
 // ==========================================
 // 5. POST ACTIONS WITH CLOUDINARY ENGINE
 // ==========================================
-plusBtn.addEventListener('click', () => { uploadModal.style.display = 'flex'; });
-closeModalBtn.addEventListener('click', closeModal);
-uploadModal.addEventListener('click', (e) => { if (e.target === uploadModal) closeModal(); });
+if (plusBtn) {
+    plusBtn.addEventListener('click', () => { uploadModal.style.display = 'flex'; });
+}
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+if (uploadModal) {
+    uploadModal.addEventListener('click', (e) => { if (e.target === uploadModal) closeModal(); });
+}
 
-mediaFileInput.addEventListener('change', () => {
-    fileNameDisplay.textContent = mediaFileInput.files.length > 0 ? mediaFileInput.files[0].name : "No file selected";
-});
+if (mediaFileInput) {
+    mediaFileInput.addEventListener('change', () => {
+        fileNameDisplay.textContent = mediaFileInput.files.length > 0 ? mediaFileInput.files[0].name : "No file selected";
+    });
+}
 
-submitPostBtn.addEventListener('click', async () => {
-    const textContent = postTextArea.value.trim();
-    if (!textContent) { alert("Please write something first!"); return; }
+if (submitPostBtn) {
+    submitPostBtn.addEventListener('click', async () => {
+        const textContent = postTextArea.value.trim();
+        if (!textContent) { alert("Please write something first!"); return; }
 
-    submitPostBtn.disabled = true;
-    submitPostBtn.textContent = "Uploading Media... ⏳";
-    let finalMediaUrl = "";
+        submitPostBtn.disabled = true;
+        submitPostBtn.textContent = "Uploading Media... ⏳";
+        let finalMediaUrl = "";
 
-    try {
-        if (mediaFileInput.files.length > 0) {
-            const file = mediaFileInput.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", UPLOAD_PRESET);
+        try {
+            if (mediaFileInput.files && mediaFileInput.files.length > 0) {
+                const file = mediaFileInput.files[0];
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", UPLOAD_PRESET);
 
-            const cloudResponse = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
-            if (!cloudResponse.ok) throw new Error("Cloudinary media upload failed. Verify configurations!");
-            const cloudData = await cloudResponse.json();
-            finalMediaUrl = cloudData.secure_url;
+                const cloudResponse = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+                if (!cloudResponse.ok) throw new Error("Cloudinary media upload failed. Verify configurations!");
+                const cloudData = await cloudResponse.json();
+                finalMediaUrl = cloudData.secure_url;
+            }
+
+            submitPostBtn.textContent = "Saving to Database... 💾";
+            const backendResponse = await fetch(`${BACKEND_URL}/posts`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text_content: textContent, media_url: finalMediaUrl })
+            });
+
+            if (!backendResponse.ok) throw new Error("Database creation failed");
+            const savedPost = await backendResponse.json();
+
+            if (typeof renderPostToStream === "function") renderPostToStream(savedPost);
+            closeModal();
+        } catch (error) {
+            alert("Post error: " + error.message);
+        } finally {
+            submitPostBtn.disabled = false;
+            submitPostBtn.textContent = "Post to Feed";
         }
-
-        submitPostBtn.textContent = "Saving to Database... 💾";
-        const backendResponse = await fetch(`${BACKEND_URL}/posts`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text_content: textContent, media_url: finalMediaUrl })
-        });
-
-        if (!backendResponse.ok) throw new Error("Database creation failed");
-        const savedPost = await backendResponse.json();
-
-        renderPostToStream(savedPost);
-        closeModal();
-    } catch (error) {
-        alert("Post error: " + error.message);
-    } finally {
-        submitPostBtn.disabled = false;
-        submitPostBtn.textContent = "Post to Feed";
-    }
-});
+    });
+}
 
 function closeModal() {
-    uploadModal.style.display = 'none';
-    postTextArea.value = "";
-    mediaFileInput.value = "";
-    fileNameDisplay.textContent = "No file selected";
+    if (uploadModal) uploadModal.style.display = 'none';
+    if (postTextArea) postTextArea.value = "";
+    if (mediaFileInput) mediaFileInput.value = "";
+    if (fileNameDisplay) fileNameDisplay.textContent = "No file selected";
 }
 
-// ==========================================
-// 6. SPONSORED ADVERTISEMENT GENERATOR
-// ==========================================
-adBtn.addEventListener('click', () => { adModal.style.display = 'flex'; });
-closeAdModalBtn.addEventListener('click', closeAdModal);
-adModal.addEventListener('click', (e) => { if (e.target === adModal) closeAdModal(); });
-
-submitAdBtn.addEventListener('click', async () => {
-    const brandName = adBrandInput.value.trim();
-    const adContent = adTextArea.value.trim();
-    if (!brandName || !adContent) { alert("Please fill out all advertisement details fields!"); return; }
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/ads`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ brand_name: brandName, ad_content: adContent })
-        });
-        if (!response.ok) throw new Error("Ad generation failed");
-        alert("Advertisement successfully deployed!");
-        closeAdModal();
-    } catch (error) {
-        alert("Ad error: " + error.message);
-    }
-});
-
-function closeAdModal() {
-    adModal.style.display = 'none';
-    adBrandInput.value = "";
-    adTextArea.value = "";
-}
-
-// ==========================================
-// 7. RENDER STREAM PIPELINES WITH ACTIONS
-// ==========================================
-function renderPostToStream(savedPost) {
-    if (!masterFeedStream) return;
-
-    const card = document.createElement('div');
-    card.className = 'feed-card';
-
-    // Build core content layout inside dynamic markup template
-    let cardHTML = `
-        <div class="post-header-row">
-            <div class="post-user-info">👤 Anonymous</div>
-        </div>
-        <p class="post-text">${savedPost.text_content || ""}</p>
-        ${savedPost.media_url ? `<img src="${savedPost.media_url}" class="feed-media" alt="Media content">` : ''}
-    `;
-
-    // INSERTED ACTION PANEL MARKUP SLOTS
-    cardHTML += `
-        <div class="post-actions">
-            <button class="action-btn like-btn">❤️ Like</button>
-            <button class="action-btn comment-btn">💬 Comment</button>
-            <button class="action-btn share-btn">🔗 Share</button>
-        </div>
-    `;
-
-    card.innerHTML = cardHTML;
-    masterFeedStream.prepend(card);
-}

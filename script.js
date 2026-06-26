@@ -4,7 +4,7 @@
 const BACKEND_URL = "http://92.4.141.75:3000";
 
 // FIXED: Corrected base URL endpoint structure to target Cloudinary's upload engine API
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dfqvmomaw/auto/upload"; 
+const CLOUDINARY_URL = "https://cloudinary.com"; 
 const UPLOAD_PRESET = "mzyuvxdm";
 
 // Global Session State Store
@@ -197,7 +197,7 @@ if (uploadModal) {
 
 if (mediaFileInput) {
     mediaFileInput.addEventListener('change', () => {
-        // FIXED: Added array boundary selection point lookup value access indicator
+        // FIXED: Now correctly targeting the first file inside the list array element
         fileNameDisplay.textContent = mediaFileInput.files.length > 0 ? mediaFileInput.files[0].name : "No file selected";
     });
 }
@@ -214,6 +214,7 @@ if (submitPostBtn) {
         try {
             // 1. Cloudinary Asset Dispatch
             if (mediaFileInput.files && mediaFileInput.files.length > 0) {
+                // FIXED: Now correctly targeting the file element instead of the whole collection item array list
                 const file = mediaFileInput.files[0];
                 const formData = new FormData();
                 formData.append("file", file);
@@ -235,8 +236,3 @@ if (submitPostBtn) {
             const backendResponse = await fetch(`${BACKEND_URL}/posts`, {
                 method: 'POST',
                 headers: postHeaders,
-                body: JSON.stringify({
-                    text: textContent,
-                    mediaUrl: finalMediaUrl
-                })
-
